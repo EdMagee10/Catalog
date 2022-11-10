@@ -39,56 +39,59 @@ namespace Catalog.Controllers
         return item.AsDto();
     }
     
-        [HttpPost]
-        public ActionResult<ItemDto>CreateItem(CreateItemDto itemDto)
-        {
-            Item item = new(){
+    [HttpPost]
+    
+    public ActionResult<ItemDto>CreateItem(CreateItemDto itemDto)
+    {
+         Item item = new(){
                 Id = Guid.NewGuid(),
                 Name = itemDto.Name,
                 Price = itemDto.Price,
                 CreatedDate = DateTimeOffset.UtcNow
-            };
+                };
 
-            repository.CreateItem(item);
+         repository.CreateItem(item);
 
-            return CreatedAtAction(nameof(GetItem), new { id = item.Id}, item.AsDto());
+         return CreatedAtAction(nameof(GetItem), new { id = item.Id}, item.AsDto());
 
 
-        }
+    }
 
-       [HttpPut("{id}")]
-        public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
-        {
-            var existingItem = repository.GetItem(id);
+    [HttpPut("{id}")]
+    
+    public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
+    {
+          var existingItem = repository.GetItem(id);
 
-            if (existingItem is null)
-            {
+          if (existingItem is null)
+          {
                 return NotFound();
-            }
+          }
 
-            Item updatedItem = existingItem with {
+          Item updatedItem = existingItem with {
                 Name = itemDto.Name,
                 Price = itemDto.Price
-            };
+          };
 
-            repository.UpdateItem(updatedItem);
+          repository.UpdateItem(updatedItem);
 
-            return NoContent();
-        }
+          return NoContent();
+    }
 
-        [HttpDelete("{id}")]
-        public ActionResult DeleteItem(Guid id)
-        {
-            var existingItem = repository.GetItem(id);
+    [HttpDelete("{id}")]
+    
+    public ActionResult DeleteItem(Guid id)
+    {
+          var existingItem = repository.GetItem(id);
 
-            if (existingItem is null)
-            {
+          if (existingItem is null)
+          {
                 return NotFound();
-            }
+          }
 
-            repository.DeleteItem(id);
+          repository.DeleteItem(id);
 
-            return NoContent();
+          return NoContent();
         }
     }
 }
